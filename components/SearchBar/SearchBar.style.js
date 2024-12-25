@@ -3,9 +3,14 @@ import { StyleSheet } from "react-native";
 export const s = StyleSheet.create({
     input: {
         backgroundColor: "white",
-        height: 40,
+        height: 50,
         paddingLeft: 15,
-        borderRadius: 20,
+        borderRadius: 15,
+        color: "gray",
+        fontWeight: "bold",
+        fontSize: 20,
+        textAlign: "center",
+        justifyContent: "center",
         fontFamily: 'Alata-Regular',
         shadowColor: "#000",
         shadowOffset: {

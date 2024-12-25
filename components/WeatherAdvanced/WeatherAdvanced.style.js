@@ -1,29 +1,38 @@
 import { StyleSheet } from "react-native";
-import { View } from "react-native";
-import { Txt } from "../Txt/Txt";
 
 export const s = StyleSheet.create({
-    constainer: {
-        flexDirection: 'row',
-        backgroundColor: '#0000005c',
-        flex: 1,
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        borderColor: 'white',
-        borderWidth: 2,
-        borderRadius: 15,
-
-    }
+  container: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    borderRadius: 15,
+    borderTopWidth: 1,
+    borderBottomWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    paddingVertical: 15,
+    marginHorizontal: 20,
+    borderColor: "white",
+  },
+  item: {
+    alignItems: "center",
+    marginTop: 50,
+  },
+  value: {
+    fontSize: 18,
+    color: "white",
+    fontWeight: "500",
+    marginTop: 10,
+  },
+  label: {
+    fontSize: 14,
+    color: "#dcdcdc",
+    marginTop: 5,
+  },
+  unit: {
+    fontSize: 13,
+    color: "#dcdcdc",
+    marginTop: 5,
+    fontWeight: "500",
+  },
 });
-
-export function StyledContainer({ children }) {
-    return <View style={{ alignItems: 'center' }}>{children}</View>
-}
-
-export function StyledLabel({ children }) {
-    return <Txt style={{ fontSize: 15 }}>{children}</Txt>
-}
-
-export function StyledValue({ children }) {
-    return <Txt style={{ fontSize: 20 }}>{children}</Txt>
-}

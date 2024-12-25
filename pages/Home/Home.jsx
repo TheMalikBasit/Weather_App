@@ -1,15 +1,37 @@
-import { View } from "react-native";
+import { useEffect, useState } from "react";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import { s } from "./Home.style";
-import { Txt } from "../../components/Txt/Txt";
-import { WeatherBasic } from "../../components/WeatherBasic/WeatherBasic";
 import { getWeatherInterpretation } from "../../utils/weather-utils";
-import { WeatherAdvanced } from "../../components/WeatherAdvanced/WeatherAdvanced";
+import { nowTOHHMM } from "../../utils/date-time";
+import { useNavigation } from "@react-navigation/native";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
+import { WeatherAdvanced } from "../../components/WeatherAdvanced/WeatherAdvanced";
+import { convertTo12HourFormat } from "../../utils/12HourFormat";
 
 export function Home({ weather, city, onSubmitSearch }) {
-  // Check if weather or current_weather is undefined
+  const nav = useNavigation();
+  const [currentTime, setCurrentTime] = useState(nowTOHHMM());
+  const [currentDate, setCurrentDate] = useState("");
+
+  // Function to format and update date and time
+  
+  const updateDateTime = () => {
+    const now = new Date();
+    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const day = dayNames[now.getDay()];
+    const date = now.toLocaleDateString([], { month: "long", day: "numeric", year: "numeric" });
+    setCurrentTime(nowTOHHMM());
+    setCurrentDate(`${day}, ${date}`);
+  };
+
+  useEffect(() => {
+    updateDateTime();
+    const interval = setInterval(updateDateTime, 60000); // Update every minute
+    return () => clearInterval(interval);
+  }, []);
+
   if (!weather || !weather.current_weather) {
-    return <Txt>Loading weather data...</Txt>;
+    return <Text style={s.loading}>Loading weather data...</Text>;
   }
 
   const currentWeather = weather.current_weather;
@@ -19,14 +41,20 @@ export function Home({ weather, city, onSubmitSearch }) {
 
   return (
     <View style={s.container}>
-      {/* Basic Weather Section */}
-      <View style={s.basic}>
-        <WeatherBasic
-          dailyWeather={weather?.daily}
-          city={city}
-          interpretation={currentInterpretation}
-          temperature={Math.round(currentWeather?.temperature)}
-        />
+      {/* City Name, Current Time, and Date */}
+      <View style={s.city_time_container}>
+        <Text style={s.city}>{city}</Text>
+        <Text style={s.date}>{currentDate}</Text>
+        <Text style={s.time}>{convertTo12HourFormat(currentTime)}</Text>
+      </View>
+
+      {/* Temperature and Weather Status */}
+      <View style={s.temperature_box}>
+        <Text style={s.temperature}>{Math.round(currentWeather?.temperature)}°</Text>
+        <View style={s.temperature_box_In}>
+          <Image style={s.weather_icon} source={currentInterpretation.image} />
+          <Text style={s.weather_status}>{currentInterpretation.label}</Text>
+        </View>
       </View>
 
       {/* Search Bar Section */}
