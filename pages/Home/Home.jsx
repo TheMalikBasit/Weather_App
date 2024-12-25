@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, Button } from "react-native";
 import { s } from "./Home.style";
 import { getWeatherInterpretation } from "../../utils/weather-utils";
 import { nowTOHHMM } from "../../utils/date-time";
@@ -7,14 +7,14 @@ import { useNavigation } from "@react-navigation/native";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { WeatherAdvanced } from "../../components/WeatherAdvanced/WeatherAdvanced";
 import { convertTo12HourFormat } from "../../utils/12HourFormat";
-
+import { supabase } from "../Supabase/supabaseClient";
 export function Home({ weather, city, onSubmitSearch }) {
   const nav = useNavigation();
   const [currentTime, setCurrentTime] = useState(nowTOHHMM());
   const [currentDate, setCurrentDate] = useState("");
 
   // Function to format and update date and time
-  
+
   const updateDateTime = () => {
     const now = new Date();
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -70,6 +70,9 @@ export function Home({ weather, city, onSubmitSearch }) {
           windspeed={currentWeather?.windspeed || 0}
         />
       </View>
+      <TouchableOpacity onPress={() => supabase.auth.signOut()} style={s.verticallySpaced}>
+        <Text style={s.buttonText}>Sign Out</Text>
+      </TouchableOpacity>
     </View>
   );
 }
